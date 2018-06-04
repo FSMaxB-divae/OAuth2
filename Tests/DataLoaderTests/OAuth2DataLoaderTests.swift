@@ -47,7 +47,7 @@ class OAuth2DataLoaderTests: XCTestCase {
 		super.setUp()
 		authPerformer = OAuth2MockPerformer()
 		authPerformer!.responseJSON = ["access_token": "toktok", "token_type": "bearer"]
-		oauth2 = OAuth2PasswordGrant(settings: ["client_id": "abc", "authorize_url": "https://oauth.io/authorize", "keychain": false] as OAuth2JSON)
+		oauth2 = OAuth2PasswordGrant(settings: ["client_id": "abc", "authorize_uri": "https://oauth.io/authorize", "keychain": false] as OAuth2JSON)
 		oauth2!.logger = OAuth2DebugLogger(.debug)
 //		oauth2!.logger = OAuth2DebugLogger(.trace)
 		oauth2!.username = "p2"
