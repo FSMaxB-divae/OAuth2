@@ -85,12 +85,50 @@ open class OAuth2ClientConfig {
 	///
 	/// Toggling `safariCancelWorkaround` to true will send an extra get-parameter to make the url unique, thus it will ask again for the new
 	/// url.
-	open var safariCancelWorkaround = false	
+	open var safariCancelWorkaround = false
+	
+	static let validSettings : Set = [
+		"client_id",
+		"client_secret",
+		"client_name",
+		"authorize_uri",
+		"token_uri",
+		"registration_uri",
+		"logo_uri",
+		"scope",
+		"redirect_uris",
+		"secret_in_body",
+		"headers",
+		"parameters",
+		"token_assume_unexpired",
+		"keychain",
+		"keychain_access_mode",
+		"keychain_access_group",
+		"keychain_account_for_client_credentials",
+		"keychain_account_for_tokens",
+		"verbose",
+		//OAuth2ClientCredentialsReddit
+		"device_id",
+		//OAuth2PasswordGrant
+		"password",
+		"username",
+	]
+	
+	static private func validateSettings(_ settings: OAuth2JSON) {
+		let keys = Set(settings.keys)
+		let invalidSettings = keys.subtracting(OAuth2ClientConfig.validSettings)
+		guard invalidSettings.isEmpty else {
+			let options = invalidSettings.map{ "\"\($0)\"" }.joined(separator: ", ")
+			fatalError("Invalid configuration option(s): \(options)")
+		}
+	}
 	
 	/**
 	Initializer to initialize properties from a settings dictionary.
 	*/
 	public init(settings: OAuth2JSON) {
+		OAuth2ClientConfig.validateSettings(settings)
+		
 		clientId = settings["client_id"] as? String
 		clientSecret = settings["client_secret"] as? String
 		clientName = settings["client_name"] as? String
